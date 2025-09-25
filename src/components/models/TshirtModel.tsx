@@ -12,12 +12,16 @@ export default function ({
   labels,
   setEnabelModelController,
   setLabels,
+  view,
+  controllerRef,
 }: any) {
-  const [data, setData] = useState<any[]>([]); // data asli edit model
+  const [rotaionY, setRotaionY] = useState<number>(0);
+
   const isDragging = useRef(false);
   const isRotation = useRef(false);
   const isScaling = useRef(false);
-  let textchurFocosed = useRef<any>({});
+  const meshBack = useRef<any>(null);
+  const textchurFocosed = useRef<any>({});
   const dataMouse = useRef({ clientX: 0, clientY: 0 });
 
   const { nodes, materials } = useGLTF(tsh);
@@ -47,7 +51,7 @@ export default function ({
             if (item.id == textchurFocosed.current.id) {
               const SCALE = 0.0005;
               item.decalX = item.decalX + e.movementX * SCALE;
-              item.decalY = item.decalY + e.movementY * SCALE;
+              item.decalY = item.decalY + -e.movementY * SCALE;
 
               return item;
             } else {
@@ -107,9 +111,20 @@ export default function ({
   useEffect(() => {
     console.log("new label:", labels);
   }, [labels]);
+  useEffect(() => {
+    controllerRef.current.reset();
+    switch (view) {
+      case "front":
+        setRotaionY(0);
+        break;
+      case "back":
+        setRotaionY(Math.PI);
+        break;
+    }
+  }, [view]);
 
   return (
-    <group dispose={null}>
+    <group dispose={null} rotation={[0, rotaionY, 0]}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <mesh
           castShadow
@@ -129,7 +144,7 @@ export default function ({
                 >
                   <Html
                     scale={0.1}
-                    position={[0.02, -0.2, 0]}
+                    position={[item.decalX, item.decalZ, item.decalY]}
                     rotation={[1.5, 0, 0]}
                     occlude
                   >
@@ -141,7 +156,7 @@ export default function ({
                     />
 
                     <MdOutlineScreenRotationAlt
-                      className="text-white"
+                      className="text-white ml-2"
                       onMouseDown={() => {
                         handelChangeRotation(item);
                       }}
@@ -156,10 +171,12 @@ export default function ({
                   </Html>
 
                   <meshBasicMaterial
-                    polygonOffset
-                    polygonOffsetFactor={-1}
                     map={useTexture(jsLogo)}
                     transparent
+                    depthTest={true}
+                    depthWrite={false}
+                    polygonOffset
+                    polygonOffsetFactor={-2}
                   />
                 </Decal>
               );
@@ -196,6 +213,7 @@ export default function ({
           geometry={nodes.Back.geometry}
           material={materials.BackMTL}
           scale={3.5}
+          ref={meshBack}
         >
           <meshStandardMaterial color={color} />
 
@@ -203,14 +221,14 @@ export default function ({
             if (item.pos == "back") {
               return (
                 <Decal
-                  rotation={[90, item.rotateZ, item.rotateY]}
+                  rotation={[45, Math.PI, item.rotateY]}
                   scale={item.scale}
                   position={[item.decalX, item.decalZ, item.decalY]}
                 >
                   <Html
                     scale={0.1}
-                    position={[0.02, -0.2, 0]}
-                    rotation={[1.5, 0, 0]}
+                    // position={[0.0, -0.2, 0]}
+                    // rotation={[1.5, 0, 0]}
                     // occlude
                   >
                     <IoIosMove
