@@ -6,6 +6,8 @@ import jsLogo from "../../../public/js.png";
 import { IoIosMove, IoIosResize } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineScreenRotationAlt } from "react-icons/md";
+import { Raycaster, Vector2 } from "three";
+import configPos from "../../utils/configPos";
 
 export default function ({
   color,
@@ -52,7 +54,7 @@ export default function ({
               const SCALE = 0.0005;
               item.decalX = item.decalX + e.movementX * SCALE;
               item.decalY = item.decalY + -e.movementY * SCALE;
-
+              console.log([item.decalX, item.decalZ, item.decalY]);
               return item;
             } else {
               return item;
@@ -120,6 +122,12 @@ export default function ({
       case "back":
         setRotaionY(Math.PI);
         break;
+      case "rigthHand":
+        setRotaionY(Math.PI / 2);
+        break;
+      case "leftHand":
+        setRotaionY(-Math.PI / 2);
+        break;
     }
   }, [view]);
 
@@ -140,7 +148,8 @@ export default function ({
                 <Decal
                   rotation={[90, item.rotateZ, item.rotateY]}
                   scale={item.scale}
-                  position={[item.decalX, item.decalZ, item.decalY]}
+                  position={[item.decalX, item.decalZ + 0.05, item.decalY]}
+                  debug={true}
                 >
                   <Html
                     scale={0.1}
@@ -173,10 +182,8 @@ export default function ({
                   <meshBasicMaterial
                     map={useTexture(jsLogo)}
                     transparent
-                    depthTest={true}
-                    depthWrite={false}
-                    polygonOffset
-                    polygonOffsetFactor={-2}
+                    // polygonOffset
+                    // polygonOffsetFactor={-2}
                   />
                 </Decal>
               );
@@ -193,6 +200,57 @@ export default function ({
           scale={3.5}
         >
           <meshStandardMaterial color={color} />
+
+          {labels.map((item: any) => {
+            if (item.pos == "leftHand") {
+              return (
+                <Decal
+                  rotation={[90, 90, item.rotateY]}
+                  rotateY={item.rotateY}
+                  scale={item.scale}
+                  // @ts-ignore
+                  position={configPos["tshirt"].leftHand ?? [0, 0, 0]}
+                  debug={true}
+                >
+                  <Html
+                    scale={0.1}
+                    // @ts-ignore
+                    position={configPos["tshirt"].leftHand ?? [0, 0, 0]}
+                    // rotation={[1.5, 0, 0]}
+                    // occlude
+                  >
+                    {/* <IoIosMove
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangePos(item);
+                      }}
+                    /> */}
+
+                    <MdOutlineScreenRotationAlt
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangeRotation(item);
+                      }}
+                    />
+
+                    <IoIosResize
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangeScale(item);
+                      }}
+                    />
+                  </Html>
+
+                  <meshBasicMaterial
+                    polygonOffset
+                    polygonOffsetFactor={-1}
+                    map={useTexture(jsLogo)}
+                    transparent
+                  />
+                </Decal>
+              );
+            }
+          })}
         </mesh>
       </group>
       <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -204,6 +262,57 @@ export default function ({
           scale={3.5}
         >
           <meshStandardMaterial color={color} />
+
+          {labels.map((item: any) => {
+            if (item.pos == "rigthHand") {
+              return (
+                <Decal
+                  rotation={[90, 90, item.rotateY]}
+                  rotateY={item.rotateY}
+                  scale={item.scale}
+                  // @ts-ignore
+                  position={configPos["tshirt"].rigthHand ?? [0, 0, 0]}
+                  debug={true}
+                >
+                  <Html
+                    scale={0.1}
+                    // @ts-ignore
+                    position={configPos["tshirt"].rigthHand ?? [0, 0, 0]}
+                    // rotation={[1.5, 0, 0]}
+                    // occlude
+                  >
+                    {/* <IoIosMove
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangePos(item);
+                      }}
+                    /> */}
+
+                    <MdOutlineScreenRotationAlt
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangeRotation(item);
+                      }}
+                    />
+
+                    <IoIosResize
+                      className="text-white"
+                      onMouseDown={() => {
+                        handelChangeScale(item);
+                      }}
+                    />
+                  </Html>
+
+                  <meshBasicMaterial
+                    polygonOffset
+                    polygonOffsetFactor={-1}
+                    map={useTexture(jsLogo)}
+                    transparent
+                  />
+                </Decal>
+              );
+            }
+          })}
         </mesh>
       </group>
       <group rotation={[-Math.PI / 2, 0, 0]}>

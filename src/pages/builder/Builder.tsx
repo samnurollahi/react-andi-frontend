@@ -3,11 +3,22 @@ import SelectSize from "../../components/selectSize/selectSize";
 // @ts-ignore
 import tsh from "../../assets/models/OptimizedBlender.glb";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Center, OrbitControls, Preload } from "@react-three/drei";
+import {
+  Center,
+  Html,
+  OrbitControls,
+  Preload,
+  useProgress,
+} from "@react-three/drei";
 import { LabelPage } from "../../components/labelPage/LabelPage";
 import { useSearchParams } from "react-router-dom";
 import TshirtModel from "../../components/models/TshirtModel";
 import HoodieModel from "../../components/models/HoodieModel";
+
+function Loader() {
+  const { progress } = useProgress();
+  return <Html center>{progress} % loaded</Html>;
+}
 
 const Builder = () => {
   const [size, setSize] = useState<
@@ -19,7 +30,6 @@ const Builder = () => {
   const [labels, setLabels] = useState<[]>([]);
   const [enabelModelController, setEnabelModelController] = useState(true);
   const [view, setView] = useState("front");
-  const [cameraZ, setCameraZ] = useState(5);
 
   const controllerRef = useRef<any>(null);
 
@@ -51,7 +61,6 @@ const Builder = () => {
             controllerRef={controllerRef}
           />
         );
-      default:
         break;
     }
   };
@@ -69,8 +78,8 @@ const Builder = () => {
           </button>
         </div>
         <div className="w-full h-[60vh] mt-2">
-          <Canvas dpr={[0, 0]} camera={{ position: [0, 0, cameraZ] }}>
-            <Suspense>
+          <Canvas dpr={[0, 0]}>
+            <Suspense fallback={<Loader />}>
               <Center>{modelHanldeler()}</Center>
               <ambientLight intensity={0.4} />
               <directionalLight
@@ -102,6 +111,9 @@ const Builder = () => {
         {/* controller navbar */}
         <div>
           <div>
+            <p className="text-right mb-2 text-white">
+              👇کدوم بخش رو میخوای طراحی کنی
+            </p>
             <div className="flex flex-row-reverse mb-3">
               <div className="w-[100px]  mx-3">
                 <button
@@ -115,7 +127,6 @@ const Builder = () => {
                   جلو لباس
                 </button>
               </div>
-
               <div className="w-[100px] mx-3">
                 <button
                   className={`text-white ${
@@ -130,16 +141,24 @@ const Builder = () => {
               </div>
               <div className="w-[100px] mx-3">
                 <button
-                  className="text-white bg-black w-[100%] py-2  rounded-sm cursor-pointer"
-                  onClick={() => {}}
+                  className={`text-white ${
+                    view != "leftHand" ? "bg-black" : "bg-neutral-500"
+                  } w-[100%] py-2  rounded-sm cursor-pointer`}
+                  onClick={() => {
+                    setView("leftHand");
+                  }}
                 >
                   استین چپ
                 </button>
               </div>
               <div className="w-[100px] mx-3">
                 <button
-                  className="text-white bg-black w-[100%] py-2  rounded-sm cursor-pointer"
-                  onClick={() => {}}
+                  className={`text-white ${
+                    view != "rigthHand" ? "bg-black" : "bg-neutral-500"
+                  } w-[100%] py-2  rounded-sm cursor-pointer`}
+                  onClick={() => {
+                    setView("rigthHand");
+                  }}
                 >
                   استین راست
                 </button>

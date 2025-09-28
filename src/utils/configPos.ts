@@ -2,7 +2,8 @@ export default {
   tshirt: {
     back: 0.2,
     front: -0.19,
-    // rotateX:
+    leftHand: [0.35, 0.05, 0.3],
+    rigthHand: [-0.35, 0.05, 0.3],
     nameFa: "تیشرت",
     nameFile: "OptimizedBlender.glb",
   },
