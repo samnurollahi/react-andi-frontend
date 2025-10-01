@@ -14,6 +14,7 @@ import { LabelPage } from "../../components/labelPage/LabelPage";
 import { useSearchParams } from "react-router-dom";
 import TshirtModel from "../../components/models/TshirtModel";
 import HoodieModel from "../../components/models/HoodieModel";
+import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 
 function Loader() {
   const { progress } = useProgress();
@@ -69,6 +70,8 @@ const Builder = () => {
     return <SelectSize setSize={setSize} size={size} />;
   } else if (modal == "label") {
     return <LabelPage setModal={setModal} setLabels={setLabels} view={view} />;
+  } else if (modal == "uploadPhoto") {
+    return <UploadPhoto setModal={setModal} />;
   } else {
     return (
       <div className="flex flex-col justify-between h-[98vh]">
@@ -235,6 +238,20 @@ const Builder = () => {
                     }}
                   >
                     بانک برچسب
+                  </button>
+                </div>
+
+                <div
+                  className="w-[100px]  mx-3"
+                  title="اپلود تصویر از سیستم شما"
+                >
+                  <button
+                    className="text-white bg-neutral-900 w-[100%] py-2  rounded-lg cursor-pointer"
+                    onClick={() => {
+                      setModal("uploadPhoto");
+                    }}
+                  >
+                    تصویر دلخواه
                   </button>
                 </div>
               </div>

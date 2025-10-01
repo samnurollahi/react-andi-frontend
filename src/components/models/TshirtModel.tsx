@@ -6,7 +6,6 @@ import jsLogo from "../../../public/js.png";
 import { IoIosMove, IoIosResize } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineScreenRotationAlt } from "react-icons/md";
-import { Raycaster, Vector2 } from "three";
 import configPos from "../../utils/configPos";
 
 export default function ({
@@ -148,7 +147,7 @@ export default function ({
                 <Decal
                   rotation={[90, item.rotateZ, item.rotateY]}
                   scale={item.scale}
-                  position={[item.decalX, item.decalZ + 0.05, item.decalY]}
+                  position={[item.decalX, item.decalZ, item.decalY]}
                   debug={true}
                 >
                   <Html
@@ -180,7 +179,7 @@ export default function ({
                   </Html>
 
                   <meshBasicMaterial
-                    map={useTexture(jsLogo)}
+                    map={useTexture("../../../public/js.png")}
                     transparent
                     // polygonOffset
                     // polygonOffsetFactor={-2}
@@ -267,8 +266,7 @@ export default function ({
             if (item.pos == "rigthHand") {
               return (
                 <Decal
-                  rotation={[90, 90, item.rotateY]}
-                  rotateY={item.rotateY}
+                  rotation={[180, 180, item.rotateY]}
                   scale={item.scale}
                   // @ts-ignore
                   position={configPos["tshirt"].rigthHand ?? [0, 0, 0]}
