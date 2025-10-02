@@ -212,7 +212,7 @@ export default function ({
                   rotation={[90, item.rotateZ, item.rotateY]}
                   scale={item.scale}
                   position={[item.decalX, item.decalZ, item.decalY]}
-                  debug={true}
+                  // debug={true}
                 >
                   <Html
                     scale={0.1}
@@ -246,7 +246,7 @@ export default function ({
                   </Html>
 
                   <meshBasicMaterial
-                    map={useTexture("../../../public/js.png")}
+                    map={useTexture<string>(item.url ?? "")}
                     transparent
                     // polygonOffset
                     // polygonOffsetFactor={-2}
@@ -276,7 +276,7 @@ export default function ({
                   scale={item.scale}
                   // @ts-ignore
                   position={configPos["tshirt"].leftHand ?? [0, 0, 0]}
-                  debug={true}
+                  // debug={true}
                 >
                   <Html
                     scale={0.1}
@@ -337,7 +337,7 @@ export default function ({
                   scale={item.scale}
                   // @ts-ignore
                   position={configPos["tshirt"].rigthHand ?? [0, 0, 0]}
-                  debug={true}
+                  // debug={true}
                 >
                   <Html
                     scale={0.1}

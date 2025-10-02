@@ -1,7 +1,9 @@
 import { MdArrowBackIos } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { v4 } from "uuid";
+import configPos from "../../utils/configPos.ts";
 
-export const TextPage = ({ setModal }: any) => {
+export const TextPage = ({ setModal, setLabels, view }: any) => {
   const [text, setText] = useState<string>("");
 
   const [isBold, setIsBold] = useState(false);
@@ -12,6 +14,33 @@ export const TextPage = ({ setModal }: any) => {
   const [textColor, setTextColor] = useState("#ffffff");
   const [strokeColor, setStrokeColor] = useState("#000000");
 
+  const convetTextToPng = () => {
+    const canvas = document.createElement("canvas");
+    const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+    ctx!.font = "30px Arial";
+    ctx!.fillText(text, 10, 50);
+    // ctx.color
+    ctx!.textAlign = "center";
+    const dataUrl = canvas.toDataURL();
+    setLabels((prev: object[]) => [
+      ...prev,
+      {
+        id: v4(),
+        title: text,
+        url: dataUrl,
+        pos: view,
+        decalX: 0,
+        decalY: 0,
+        rotateX: 0,
+        rotateY: 0,
+        rotateZ: 0,
+        // @ts-ignore
+        decalZ: configPos.tshirt[view] || 0,
+        scale: 0.1,
+      },
+    ]);
+    setModal("");
+  };
   useEffect(() => {
     const handelText = (e: KeyboardEvent) => {
       setText((prev: string) => {
@@ -72,7 +101,7 @@ export const TextPage = ({ setModal }: any) => {
             WebkitTextStroke: `1px ${strokeColor}`,
           }}
         >
-          {text || "متن شما اینجا نمایش داده می‌شود"}
+          {text || "تایپ کنید"}
         </div>
       </div>
 
@@ -139,12 +168,11 @@ export const TextPage = ({ setModal }: any) => {
         </div>
       </div>
 
-      {/* دکمه افزودن */}
       <div className="sm:w-[85%] md:w-[60%] m-auto mt-4">
         <button
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl shadow-lg transition-all duration-200 cursor-pointer"
           onClick={() => {
-            console.log("متن اضافه شد:", text);
+            convetTextToPng();
           }}
         >
           افزودن

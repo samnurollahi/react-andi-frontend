@@ -74,7 +74,7 @@ const Builder = () => {
   } else if (modal == "uploadPhoto") {
     return <UploadPhoto setModal={setModal} />;
   } else if (modal == "text") {
-    return <TextPage setModal={setModal} />;
+    return <TextPage setModal={setModal} setLabels={setLabels} view={view} />;
   } else {
     return (
       <div className="flex flex-col justify-between h-[98vh]">
