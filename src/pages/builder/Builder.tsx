@@ -15,6 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import TshirtModel from "../../components/models/TshirtModel";
 import HoodieModel from "../../components/models/HoodieModel";
 import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
+import { TextPage } from "../../components/text/TextPage";
 
 function Loader() {
   const { progress } = useProgress();
@@ -72,6 +73,8 @@ const Builder = () => {
     return <LabelPage setModal={setModal} setLabels={setLabels} view={view} />;
   } else if (modal == "uploadPhoto") {
     return <UploadPhoto setModal={setModal} />;
+  } else if (modal == "text") {
+    return <TextPage setModal={setModal} />;
   } else {
     return (
       <div className="flex flex-col justify-between h-[98vh]">
@@ -172,7 +175,7 @@ const Builder = () => {
             className="w-[100%] rounded-[25px] p-5"
             style={{ background: "#d7d3d412" }}
           >
-            <div className="flex flex-row-reverse justify-between">
+            <div className="flex  flex-col justify-between">
               <div className="flex flex-row-reverse">
                 <div className="w-[100px] relative mx-3">
                   <div
@@ -252,6 +255,20 @@ const Builder = () => {
                     }}
                   >
                     تصویر دلخواه
+                  </button>
+                </div>
+
+                <div
+                  className="w-[100px]  mx-3"
+                  title="نوشتن متن دلخواه روی مدل"
+                >
+                  <button
+                    className="text-white bg-neutral-900 w-[100%] py-2  rounded-lg cursor-pointer"
+                    onClick={() => {
+                      setModal("text");
+                    }}
+                  >
+                    متن دلخواه
                   </button>
                 </div>
               </div>

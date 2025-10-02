@@ -108,6 +108,70 @@ export default function ({
       isScaling.current = false;
       setEnabelModelController(true);
     });
+    window.addEventListener("touchmove", (e: any) => {
+      console.log(isDragging.current);
+      if (isDragging.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const SCALE = 0.0005;
+              item.decalX = item.decalX + e.movementX * SCALE;
+              item.decalY = item.decalY + -e.movementY * SCALE;
+              console.log([item.decalX, item.decalZ, item.decalY]);
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+
+          return [...prev];
+        });
+      } else if (isRotation.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const oldRotation = item.rotateY || 0;
+
+              const deltaX = e.movementX;
+              const newRotation = oldRotation + deltaX * 0.005;
+              item.rotateY = newRotation;
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+          return [...prev];
+        });
+      } else if (isScaling.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const oldScale = item.scale ?? 1;
+              const delta = e.movementY ?? 0;
+              const sensitivity = 0.005;
+              let newScale = oldScale + delta * sensitivity;
+
+              newScale = Math.max(0.1, Math.min(5, newScale));
+              item.scale = newScale;
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+          return [...prev];
+        });
+      }
+      dataMouse.current = { clientX: e.clientX, clientY: e.clientY };
+    });
+    window.addEventListener("touchend", () => {
+      isDragging.current = false;
+      isRotation.current = false;
+      isScaling.current = false;
+      setEnabelModelController(true);
+    });
   }, []);
   useEffect(() => {
     console.log("new label:", labels);
@@ -158,6 +222,9 @@ export default function ({
                   >
                     <IoIosMove
                       className="text-white"
+                      onTouchStart={() => {
+                        handelChangePos(item);
+                      }}
                       onMouseDown={() => {
                         handelChangePos(item);
                       }}
