@@ -17,10 +17,14 @@ export const TextPage = ({ setModal, setLabels, view }: any) => {
   const convetTextToPng = () => {
     const canvas = document.createElement("canvas");
     const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-    ctx!.font = "30px Arial";
-    ctx!.fillText(text, 10, 50);
-    // ctx.color
+    ctx!.font = `${isBold ? "bold" : ""} ${
+      isItalic ? "italic" : ""
+    } 30px Arial`;
+    ctx!.fillStyle = textColor;
     ctx!.textAlign = "center";
+    ctx!.textBaseline = "middle";
+
+    ctx!.fillText(text, canvas.width / 2, canvas.height / 2);
     const dataUrl = canvas.toDataURL();
     setLabels((prev: object[]) => [
       ...prev,

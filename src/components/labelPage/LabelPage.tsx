@@ -1,6 +1,7 @@
 import { MdArrowBackIos } from "react-icons/md";
 import { v4 } from "uuid";
 import configPos from "../../utils/configPos.ts";
+import { useTexture } from "@react-three/drei";
 
 export const LabelPage = ({ setModal, setLabels, view }: any) => {
   return (
@@ -54,6 +55,7 @@ export const LabelPage = ({ setModal, setLabels, view }: any) => {
                       // @ts-ignore
                       decalZ: configPos.tshirt[view] || 0,
                       scale: 0.1,
+                      // textCs: useTexture("./js.png"),
                     },
                   ]);
                   setModal("");

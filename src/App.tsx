@@ -7,6 +7,16 @@ import Praivate from "./components/praivate/Praivate";
 import { Login } from "./pages/login/Login";
 
 function App() {
+  console.log(`
+██╗   ██╗ ██████╗ ██╗     ██╗   ██╗
+██║   ██║██╔═══██╗██║     ██║   ██║
+██║   ██║██║   ██║██║     ██║   ██║
+╚██╗ ██╔╝██║   ██║██║     ██║   ██║
+ ╚████╔╝ ╚██████╔╝███████╗╚██████╔╝
+  ╚═══╝   ╚═════╝ ╚══════╝ ╚═════╝ 
+              volv.ir
+`);
+
   return (
     <>
       <Auth>
@@ -18,7 +28,7 @@ function App() {
               path="/builder"
               element={
                 // <Praivate>
-                  <Builder />
+                <Builder />
                 // </Praivate>
               }
             />

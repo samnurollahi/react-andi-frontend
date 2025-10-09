@@ -1,8 +1,8 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import SelectSize from "../../components/selectSize/selectSize";
 // @ts-ignore
 import tsh from "../../assets/models/OptimizedBlender.glb";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   Center,
   Html,
@@ -16,6 +16,8 @@ import TshirtModel from "../../components/models/TshirtModel";
 import HoodieModel from "../../components/models/HoodieModel";
 import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import { TextPage } from "../../components/text/TextPage";
+import { MdDeleteForever } from "react-icons/md";
+import styled from "./builder.module.css";
 
 function Loader() {
   const { progress } = useProgress();
@@ -29,9 +31,11 @@ const Builder = () => {
   const [color, setColor] = useState("#fff");
   const [statusChangeColor, setStatusCahngeColor] = useState(false);
   const [modal, setModal] = useState("");
-  const [labels, setLabels] = useState<[]>([]);
+  const [labels, setLabels] = useState<any[]>([]);
   const [enabelModelController, setEnabelModelController] = useState(true);
   const [view, setView] = useState("front");
+  const [idFocos, setIdFocos] = useState<string>("");
+  const [blakList, setBlackList] = useState<string[]>([]);
 
   const controllerRef = useRef<any>(null);
 
@@ -48,6 +52,8 @@ const Builder = () => {
             setEnabelModelController={setEnabelModelController}
             view={view}
             controllerRef={controllerRef}
+            idFocos={idFocos}
+            blakList={blakList}
           />
         );
         break;
@@ -61,11 +67,16 @@ const Builder = () => {
             setEnabelModelController={setEnabelModelController}
             view={view}
             controllerRef={controllerRef}
+            idFocos={idFocos}
           />
         );
         break;
     }
   };
+
+  function deleteLabel(label: any) {
+    setBlackList((prev) => [...prev, label.id]);
+  }
 
   if (!size) {
     return <SelectSize setSize={setSize} size={size} />;
@@ -171,6 +182,46 @@ const Builder = () => {
               </div>
             </div>
           </div>
+
+          {/* layer */}
+          <div className="w-[100%] ml-4 mb-4 flex space-x-5">
+            {labels.map((label: any) => {
+              return label.pos == view && !blakList.includes(label.id) ? (
+                <div
+                  key={label.id + Math.random()}
+                  onClick={() => setIdFocos(label.id)}
+                  className={`w-[60px] h-[60px] border border-stone-400 flex items-center justify-center rounded-sm cursor-pointer bg-cover bg-[url('./bgl.png')] ${
+                    label.scale == 0 ? "hidden" : ""
+                  } ${styled.container}`}
+                >
+                  <img src="./js.png" alt="" className="w-[40px] h-[40px]" />
+                  <div
+                    className={styled.poup}
+                    onClick={() => deleteLabel(label)}
+                  >
+                    <MdDeleteForever className="text-red-700" />
+                  </div>
+                </div>
+              ) : (
+                <div
+                  key={label.id + Math.random()}
+                  onClick={() => setIdFocos(label.id)}
+                  className={`hidden w-[60px] h-[60px] border border-stone-400 items-center justify-center rounded-sm cursor-pointer bg-cover bg-[url('./bgl.png')] ${
+                    label.scale == 0 ? "hidden" : ""
+                  } ${styled.container}`}
+                >
+                  <img src="./js.png" alt="" className="w-[40px] h-[40px]" />
+                  <div
+                    className={styled.poup}
+                    onClick={() => deleteLabel(label)}
+                  >
+                    <MdDeleteForever className="text-red-700" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           <div
             className="w-[100%] rounded-[25px] p-5"
             style={{ background: "#d7d3d412" }}

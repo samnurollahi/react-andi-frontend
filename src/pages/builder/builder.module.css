@@ -1,0 +1,37 @@
+.container {
+  position: relative;
+}
+
+.container:hover .poup {
+  opacity: 1;
+  pointer-events: auto;
+  top: -10px; /* بالاتر بیاد */
+  left: 50%;
+  transform: translate(-50%, -100%); /* وسط‌چین و بالا */
+}
+
+.poup {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  background: white;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.poup::before {
+  content: "";
+  position: absolute;
+  bottom: -8px; /* مثلث پایین پاپ‌آپ */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}

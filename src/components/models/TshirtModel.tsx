@@ -4,7 +4,7 @@ import { Decal, Html, useGLTF, useTexture } from "@react-three/drei";
 
 import jsLogo from "../../../public/js.png";
 import { IoIosMove, IoIosResize } from "react-icons/io";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MdOutlineScreenRotationAlt } from "react-icons/md";
 import configPos from "../../utils/configPos";
 
@@ -15,6 +15,8 @@ export default function ({
   setLabels,
   view,
   controllerRef,
+  idFocos,
+  blakList,
 }: any) {
   const [rotaionY, setRotaionY] = useState<number>(0);
 
@@ -24,8 +26,11 @@ export default function ({
   const meshBack = useRef<any>(null);
   const textchurFocosed = useRef<any>({});
   const dataMouse = useRef({ clientX: 0, clientY: 0 });
+  const texts = useRef<any>({});
 
   const { nodes, materials } = useGLTF(tsh);
+
+  const jsText = useTexture<string>("./js.png");
 
   const handelChangePos = (item: any) => {
     textchurFocosed.current = item;
@@ -173,9 +178,9 @@ export default function ({
       setEnabelModelController(true);
     });
   }, []);
-  useEffect(() => {
-    console.log("new label:", labels);
-  }, [labels]);
+  // useEffect(() => {
+  //   console.log("new label:", labels);
+  // }, [labels]);
   useEffect(() => {
     controllerRef.current.reset();
     switch (view) {
@@ -194,6 +199,13 @@ export default function ({
     }
   }, [view]);
 
+  // useMemo(() => {
+  //   console.log("useMemp", labels);
+  //   // labels.forEach((item: any) => {
+  //   // texts[item.id] = useTexture(item.url ?? "");
+  //   // });
+  // }, [labels]);
+
   return (
     <group dispose={null} rotation={[0, rotaionY, 0]}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -206,54 +218,101 @@ export default function ({
         >
           <meshStandardMaterial color={color} />
           {labels.map((item: any) => {
-            if (item.pos == "front") {
-              return (
-                <Decal
-                  rotation={[90, item.rotateZ, item.rotateY]}
-                  scale={item.scale}
+            return item.pos == "front" && !blakList.includes(item.id) ? (
+              <Decal
+                key={item.id}
+                rotation={[90, item.rotateZ, item.rotateY]}
+                scale={item.scale}
+                position={[item.decalX, item.decalZ, item.decalY]}
+                // debug={true}
+              >
+                <Html
+                  // scale={0.1}
                   position={[item.decalX, item.decalZ, item.decalY]}
-                  // debug={true}
+                  rotation={[1.5, 0, 0]}
+                  occlude
+                  style={{ display: idFocos == item.id ? "block" : "none" }}
                 >
-                  <Html
-                    scale={0.1}
-                    position={[item.decalX, item.decalZ, item.decalY]}
-                    rotation={[1.5, 0, 0]}
-                    occlude
-                  >
-                    <IoIosMove
-                      className="text-white"
-                      onTouchStart={() => {
-                        handelChangePos(item);
-                      }}
-                      onMouseDown={() => {
-                        handelChangePos(item);
-                      }}
-                    />
-
-                    <MdOutlineScreenRotationAlt
-                      className="text-white ml-2"
-                      onMouseDown={() => {
-                        handelChangeRotation(item);
-                      }}
-                    />
-
-                    <IoIosResize
-                      className="text-white"
-                      onMouseDown={() => {
-                        handelChangeScale(item);
-                      }}
-                    />
-                  </Html>
-
-                  <meshBasicMaterial
-                    map={useTexture<string>(item.url ?? "")}
-                    transparent
-                    // polygonOffset
-                    // polygonOffsetFactor={-2}
+                  <IoIosMove
+                    className="text-white"
+                    onTouchStart={() => {
+                      handelChangePos(item);
+                    }}
+                    onMouseDown={() => {
+                      handelChangePos(item);
+                    }}
                   />
-                </Decal>
-              );
-            }
+
+                  <MdOutlineScreenRotationAlt
+                    className="text-white ml-2"
+                    onMouseDown={() => {
+                      handelChangeRotation(item);
+                    }}
+                  />
+
+                  <IoIosResize
+                    className="text-white"
+                    onMouseDown={() => {
+                      handelChangeScale(item);
+                    }}
+                  />
+                </Html>
+
+                <meshBasicMaterial
+                  map={useTexture<string>(item.url)}
+                  transparent
+                  // polygonOffset
+                  // polygonOffsetFactor={-2}
+                />
+              </Decal>
+            ) : (
+              <Decal
+                key={item.id}
+                rotation={[90, item.rotateZ, item.rotateY]}
+                scale={0}
+                position={[item.decalX, item.decalZ, item.decalY]}
+                // debug={true}
+              >
+                <Html
+                  // scale={0.1}
+                  position={[item.decalX, item.decalZ, item.decalY]}
+                  rotation={[1.5, 0, 0]}
+                  occlude
+                  style={{ display: "none" }}
+                >
+                  <IoIosMove
+                    className="text-white"
+                    onTouchStart={() => {
+                      handelChangePos(item);
+                    }}
+                    onMouseDown={() => {
+                      handelChangePos(item);
+                    }}
+                  />
+
+                  <MdOutlineScreenRotationAlt
+                    className="text-white ml-2"
+                    onMouseDown={() => {
+                      handelChangeRotation(item);
+                    }}
+                  />
+
+                  <IoIosResize
+                    className="text-white"
+                    onMouseDown={() => {
+                      handelChangeScale(item);
+                    }}
+                  />
+                </Html>
+
+                <meshBasicMaterial
+                  map={useTexture<string>(item.url)}
+                  transparent
+                  // polygonOffset
+                  // polygonOffsetFactor={-2}
+                />
+              </Decal>
+            );
           })}
         </mesh>
       </group>
@@ -271,6 +330,7 @@ export default function ({
             if (item.pos == "leftHand") {
               return (
                 <Decal
+                  key={item.id}
                   rotation={[90, 90, item.rotateY]}
                   rotateY={item.rotateY}
                   scale={item.scale}
@@ -279,7 +339,8 @@ export default function ({
                   // debug={true}
                 >
                   <Html
-                    scale={0.1}
+                    // scale={0.1}
+                    style={{ display: idFocos == item.id ? "block" : "none" }}
                     // @ts-ignore
                     position={configPos["tshirt"].leftHand ?? [0, 0, 0]}
                     // rotation={[1.5, 0, 0]}
@@ -333,6 +394,7 @@ export default function ({
             if (item.pos == "rigthHand") {
               return (
                 <Decal
+                  key={item.id}
                   rotation={[180, 180, item.rotateY]}
                   scale={item.scale}
                   // @ts-ignore
@@ -340,7 +402,8 @@ export default function ({
                   // debug={true}
                 >
                   <Html
-                    scale={0.1}
+                    // scale={0.1}
+                    style={{ display: idFocos == item.id ? "block" : "none" }}
                     // @ts-ignore
                     position={configPos["tshirt"].rigthHand ?? [0, 0, 0]}
                     // rotation={[1.5, 0, 0]}
@@ -395,12 +458,14 @@ export default function ({
             if (item.pos == "back") {
               return (
                 <Decal
+                  key={item.id}
                   rotation={[45, Math.PI, item.rotateY]}
                   scale={item.scale}
                   position={[item.decalX, item.decalZ, item.decalY]}
                 >
                   <Html
-                    scale={0.1}
+                    // scale={0.1}
+                    style={{ display: idFocos == item.id ? "block" : "none" }}
                     // position={[0.0, -0.2, 0]}
                     // rotation={[1.5, 0, 0]}
                     // occlude
