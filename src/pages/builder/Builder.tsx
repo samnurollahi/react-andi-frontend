@@ -194,7 +194,7 @@ const Builder = () => {
                     label.scale == 0 ? "hidden" : ""
                   } ${styled.container}`}
                 >
-                  <img src="./js.png" alt="" className="w-[40px] h-[40px]" />
+                  <img src={label.url} alt="" className="w-[40px] h-[40px]" />
                   <div
                     className={styled.poup}
                     onClick={() => deleteLabel(label)}
@@ -210,7 +210,7 @@ const Builder = () => {
                     label.scale == 0 ? "hidden" : ""
                   } ${styled.container}`}
                 >
-                  <img src="./js.png" alt="" className="w-[40px] h-[40px]" />
+                  <img src={label.url} alt="" className="w-[40px] h-[40px]" />
                   <div
                     className={styled.poup}
                     onClick={() => deleteLabel(label)}

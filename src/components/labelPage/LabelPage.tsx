@@ -55,7 +55,6 @@ export const LabelPage = ({ setModal, setLabels, view }: any) => {
                       // @ts-ignore
                       decalZ: configPos.tshirt[view] || 0,
                       scale: 0.1,
-                      // textCs: useTexture("./js.png"),
                     },
                   ]);
                   setModal("");
