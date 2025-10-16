@@ -24,6 +24,7 @@ export default function ({ isNotif = false }: props) {
       dataT.push({
         nameFa: configPos[k].nameFa || "مدل",
         name: k,
+        th: configPos[k].th || "url",
       });
     }
     setModels(dataT);
@@ -48,8 +49,10 @@ export default function ({ isNotif = false }: props) {
               onClick={() => {
                 navi(`/builder?model=${model.name}`);
               }}
-              className="w-[150px] h-[150px] border-2 rounded-4xl bg-amber-100 cursor-pointer"
-            ></div>
+              className="w-[150px] h-[150px] border-2 rounded-4xl bg-amber-100 cursor-pointer flex items-center justify-center"
+            >
+              <img src={`${model.th}`} alt="" className="w-[50%]" />
+            </div>
             <p className="text-white text-center">{model.nameFa}</p>
           </div>
         ))}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 import configPos from "../../utils/configPos.ts";
 
-export const TextPage = ({ setModal, setLabels, view }: any) => {
+export const TextPage = ({ setModal, setLabels, view, modelName }: any) => {
   const [text, setText] = useState<string>("");
 
   const [isBold, setIsBold] = useState(false);
@@ -33,14 +33,17 @@ export const TextPage = ({ setModal, setLabels, view }: any) => {
         title: text,
         url: dataUrl,
         pos: view,
-        decalX: 0,
-        decalY: 0,
+        // @ts-ignore
+        decalX: configPos[modelName].spawnX,
+        // @ts-ignore
+        decalY: configPos[modelName].spawnY,
         rotateX: 0,
         rotateY: 0,
         rotateZ: 0,
         // @ts-ignore
-        decalZ: configPos.tshirt[view] || 0,
-        scale: 0.1,
+        decalZ: configPos[modelName][view] || 0,
+        // @ts-ignore
+        scale: configPos[modelName].scale,
       },
     ]);
     setModal("");

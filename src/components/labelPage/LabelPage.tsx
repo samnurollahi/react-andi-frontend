@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import configPos from "../../utils/configPos.ts";
 import { useTexture } from "@react-three/drei";
 
-export const LabelPage = ({ setModal, setLabels, view }: any) => {
+export const LabelPage = ({ setModal, setLabels, view, modelName }: any) => {
   return (
     <div className="">
       <div className="flex flex-col justify-center  mt-3">
@@ -40,6 +40,7 @@ export const LabelPage = ({ setModal, setLabels, view }: any) => {
               <div
                 className="cursor-pointer size-52"
                 onClick={() => {
+                  // console.log(configPos[modelName][view]);
                   setLabels((prev: object[]) => [
                     ...prev,
                     {
@@ -47,14 +48,17 @@ export const LabelPage = ({ setModal, setLabels, view }: any) => {
                       title: "js",
                       url: "./js.png",
                       pos: view,
-                      decalX: 0,
-                      decalY: 0,
+                      // @ts-ignore
+                      decalX: configPos[modelName].spawnX,
+                      // @ts-ignore
+                      decalY: configPos[modelName].spawnY,
                       rotateX: 0,
                       rotateY: 0,
                       rotateZ: 0,
                       // @ts-ignore
-                      decalZ: configPos.tshirt[view] || 0,
-                      scale: 0.1,
+                      decalZ: configPos[modelName][view] || 0,
+                      // @ts-ignore
+                      scale: configPos[modelName].scale,
                     },
                   ]);
                   setModal("");

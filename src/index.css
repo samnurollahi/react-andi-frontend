@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
-*{
+@font-face {
+  font-family: vazir;
+  src: url(./assets/font/vazir.ttf);
+}
+
+* {
   box-sizing: border-box;
   user-select: none;
+  font-family: vazir;
 }
 body {
   background-color: #202124;

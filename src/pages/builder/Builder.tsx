@@ -18,6 +18,8 @@ import UploadPhoto from "../../components/uploadPhoto/UploadPhoto";
 import { TextPage } from "../../components/text/TextPage";
 import { MdDeleteForever } from "react-icons/md";
 import styled from "./builder.module.css";
+import configPos from "../../utils/configPos";
+import MugModel from "../../components/models/MugModel";
 
 function Loader() {
   const { progress } = useProgress();
@@ -68,6 +70,22 @@ const Builder = () => {
             view={view}
             controllerRef={controllerRef}
             idFocos={idFocos}
+            blakList={blakList}
+          />
+        );
+        break;
+
+      case "mug":
+        return (
+          <MugModel
+            color={color}
+            labels={labels}
+            setLabels={setLabels}
+            setEnabelModelController={setEnabelModelController}
+            view={view}
+            controllerRef={controllerRef}
+            idFocos={idFocos}
+            blakList={blakList}
           />
         );
         break;
@@ -81,11 +99,25 @@ const Builder = () => {
   if (!size) {
     return <SelectSize setSize={setSize} size={size} />;
   } else if (modal == "label") {
-    return <LabelPage setModal={setModal} setLabels={setLabels} view={view} />;
+    return (
+      <LabelPage
+        setModal={setModal}
+        setLabels={setLabels}
+        view={view}
+        modelName={modelName}
+      />
+    );
   } else if (modal == "uploadPhoto") {
     return <UploadPhoto setModal={setModal} />;
   } else if (modal == "text") {
-    return <TextPage setModal={setModal} setLabels={setLabels} view={view} />;
+    return (
+      <TextPage
+        setModal={setModal}
+        setLabels={setLabels}
+        view={view}
+        modelName={modelName}
+      />
+    );
   } else {
     return (
       <div className="flex flex-col justify-between h-[98vh]">
@@ -132,54 +164,26 @@ const Builder = () => {
               👇کدوم بخش رو میخوای طراحی کنی
             </p>
             <div className="flex flex-row-reverse mb-3">
-              <div className="w-[100px]  mx-3">
-                <button
-                  className={`text-white ${
-                    view != "front" ? "bg-black" : "bg-neutral-500"
-                  } w-[100%] py-2  rounded-sm cursor-pointer`}
-                  onClick={() => {
-                    setView("front");
-                  }}
-                >
-                  جلو لباس
-                </button>
-              </div>
-              <div className="w-[100px] mx-3">
-                <button
-                  className={`text-white ${
-                    view != "back" ? "bg-black" : "bg-neutral-500"
-                  } w-[100%] py-2  rounded-sm cursor-pointer`}
-                  onClick={() => {
-                    setView("back");
-                  }}
-                >
-                  پشت لباس
-                </button>
-              </div>
-              <div className="w-[100px] mx-3">
-                <button
-                  className={`text-white ${
-                    view != "leftHand" ? "bg-black" : "bg-neutral-500"
-                  } w-[100%] py-2  rounded-sm cursor-pointer`}
-                  onClick={() => {
-                    setView("leftHand");
-                  }}
-                >
-                  استین چپ
-                </button>
-              </div>
-              <div className="w-[100px] mx-3">
-                <button
-                  className={`text-white ${
-                    view != "rigthHand" ? "bg-black" : "bg-neutral-500"
-                  } w-[100%] py-2  rounded-sm cursor-pointer`}
-                  onClick={() => {
-                    setView("rigthHand");
-                  }}
-                >
-                  استین راست
-                </button>
-              </div>
+              {modelName &&
+                configPos[modelName as keyof typeof configPos] &&
+                configPos[modelName as keyof typeof configPos].meshs.map(
+                  (mesh: { name: string; value: string }) => {
+                    return (
+                      <div className="w-[100px]  mx-3">
+                        <button
+                          className={`text-white ${
+                            view != mesh.value ? "bg-black" : "bg-neutral-500"
+                          } w-[100%] py-2  rounded-sm cursor-pointer`}
+                          onClick={() => {
+                            setView(mesh.value);
+                          }}
+                        >
+                          {mesh.name}
+                        </button>
+                      </div>
+                    );
+                  }
+                )}
             </div>
           </div>
 
