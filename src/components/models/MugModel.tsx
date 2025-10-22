@@ -1,5 +1,5 @@
 // @ts-ignore
-import tsh from "../../assets/models/Mug_Revision.glb";
+import tsh from "../../assets/models/Mug_Revision2.glb";
 import { Decal, Html, useGLTF, useTexture } from "@react-three/drei";
 
 import { IoIosMove, IoIosResize } from "react-icons/io";
@@ -421,6 +421,16 @@ export default function ({
         castShadow
         receiveShadow
         geometry={nodes.Object004.geometry}
+        material={materials.wire_000000000}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color={color} />
+      </mesh>
+
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Object006.geometry}
         material={materials.wire_000000000}
         rotation={[Math.PI / 2, 0, 0]}
       >

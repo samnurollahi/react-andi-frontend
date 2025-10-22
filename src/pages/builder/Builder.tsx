@@ -20,6 +20,7 @@ import { MdDeleteForever } from "react-icons/md";
 import styled from "./builder.module.css";
 import configPos from "../../utils/configPos";
 import MugModel from "../../components/models/MugModel";
+import OverTshirtModel from "../../components/models/OverTshirtModel";
 
 function Loader() {
   const { progress } = useProgress();
@@ -89,6 +90,20 @@ const Builder = () => {
           />
         );
         break;
+
+      case "oversizeTshirt":
+        return (
+          <OverTshirtModel
+            color={color}
+            labels={labels}
+            setLabels={setLabels}
+            setEnabelModelController={setEnabelModelController}
+            view={view}
+            controllerRef={controllerRef}
+            idFocos={idFocos}
+            blakList={blakList}
+          />
+        );
     }
   };
 
