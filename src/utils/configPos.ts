@@ -26,9 +26,11 @@ export default {
   hoodie: {
     back: -5,
     front: 4,
+    bag: 5,
     nameFa: "هودی",
     nameFile: "Hoodie_Revision2.glb",
     th: "/thModel/h.png",
+    bagFullPosSpawn: [0.34000000000000163, 5, 9.729999999999979],
 
     //? data spwan
     scale: 4,
@@ -41,7 +43,7 @@ export default {
       { name: "پشت لباس", value: "back" },
       { name: "استین چپ", value: "leftHand" },
       { name: "استین راست", value: "rigthHand" },
-      { name: "کلاه", value: "head" },
+      // { name: "کلاه", value: "head" },
       { name: "جیب", value: "bag" },
     ],
   },

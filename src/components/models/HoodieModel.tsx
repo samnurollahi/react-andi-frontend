@@ -183,6 +183,8 @@ export default function ({
       case "rigthHand":
         setRotaionY(-1.7);
         break;
+      default:
+        setRotaionY(0);
     }
   }, [view]);
 
@@ -197,6 +199,7 @@ export default function ({
       >
         <meshStandardMaterial color={color} />
       </mesh>
+      //! astin
       <mesh
         castShadow
         receiveShadow
@@ -205,25 +208,15 @@ export default function ({
         rotation={[Math.PI / 2, 0, 0]}
       >
         <meshStandardMaterial color={color} />
-      </mesh>
-      //! back
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Group32806.geometry}
-        material={materials["Hoodie_Revision_Material__25.001"]}
-        rotation={[Math.PI / 2, 0, 0]}
-      >
-        <meshStandardMaterial color={color} />
 
         {labels.map((item: any) => {
-          return item.pos == "back" && !blakList.includes(item.id) ? (
+          return item.pos == "leftHand" && !blakList.includes(item.id) ? (
             <Decal
               key={item.id}
-              rotation={[45, Math.PI, item.rotateY]}
+              rotation={[90, 90, item.rotateY]}
               scale={item.scale}
-              position={[item.decalX, item.decalZ, item.decalY]}
-              debug={true}
+              position={[-7.539999999999983, item.decalZ, -0.6000000000000004]}
+              // debug={true}
             >
               <Html
                 // scale={0.1}
@@ -307,6 +300,108 @@ export default function ({
           );
         })}
       </mesh>
+      //! back
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Group32806.geometry}
+        material={materials["Hoodie_Revision_Material__25.001"]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color={color} />
+
+        {labels.map((item: any) => {
+          return item.pos == "back" && !blakList.includes(item.id) ? (
+            <Decal
+              key={item.id}
+              rotation={[45, Math.PI, item.rotateY]}
+              scale={item.scale}
+              position={[item.decalX, item.decalZ, item.decalY]}
+              // debug={true}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: idFocos == item.id ? "block" : "none" }}
+                // position={[0.0, -0.2, 0]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                />
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          ) : (
+            <Decal
+              key={item.id}
+              rotation={[45, Math.PI, item.rotateY]}
+              scale={0}
+              position={[item.decalX, item.decalZ, item.decalY]}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: "none" }}
+                // position={[0.0, -0.2, 0]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                />
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          );
+        })}
+      </mesh>
+      //! bag
       <mesh
         castShadow
         receiveShadow
@@ -315,6 +410,96 @@ export default function ({
         rotation={[Math.PI / 2, 0, 0]}
       >
         <meshStandardMaterial color={color} />
+        {labels.map((item: any) => {
+          return item.pos == "bag" && !blakList.includes(item.id) ? (
+            <Decal
+              key={item.id}
+              rotation={[45, Math.PI, item.rotateY]}
+              scale={item.scale}
+              position={[0.34000000000000163, item.decalZ, 9.729999999999979]}
+              // debug={true}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: idFocos == item.id ? "block" : "none" }}
+                position={[0.34000000000000163, item.decalZ, 9.729999999999979]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                {/* <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                /> */}
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          ) : (
+            <Decal
+              key={item.id}
+              rotation={[45, Math.PI, item.rotateY]}
+              scale={0}
+              position={[item.decalX, item.decalZ, item.decalY]}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: "none" }}
+                // position={[0.0, -0.2, 0]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                />
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          );
+        })}
       </mesh>
       <mesh
         castShadow
@@ -342,7 +527,7 @@ export default function ({
               rotation={[45, Math.PI, item.rotateY]}
               scale={item.scale}
               position={[item.decalX, item.decalZ, item.decalY]}
-              debug={true}
+              // debug={true}
             >
               <Html
                 // scale={0.1}
@@ -451,8 +636,9 @@ export default function ({
         material={materials["Hoodie_Revision_wire_087224198.001"]}
         rotation={[Math.PI / 2, 0, 0]}
       >
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial color={""} />
       </mesh>
+      //! astin
       <mesh
         castShadow
         receiveShadow
@@ -461,6 +647,96 @@ export default function ({
         rotation={[Math.PI / 2, 0, 0]}
       >
         <meshStandardMaterial color={color} />
+        {labels.map((item: any) => {
+          return item.pos == "rigthHand" && !blakList.includes(item.id) ? (
+            <Decal
+              key={item.id}
+              rotation={[180, 45, item.rotateY]}
+              scale={item.scale}
+              position={[8.570000000000132, item.decalZ, -0.919999999999986]}
+              debug={true}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: idFocos == item.id ? "block" : "none" }}
+                // position={[0.0, -0.2, 0]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                />
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          ) : (
+            <Decal
+              key={item.id}
+              rotation={[45, Math.PI, item.rotateY]}
+              scale={0}
+              position={[item.decalX, item.decalZ, item.decalY]}
+            >
+              <Html
+                // scale={0.1}
+                style={{ display: "none" }}
+                // position={[0.0, -0.2, 0]}
+                // rotation={[1.5, 0, 0]}
+                // occlude
+              >
+                <IoIosMove
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangePos(item);
+                  }}
+                />
+
+                <MdOutlineScreenRotationAlt
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeRotation(item);
+                  }}
+                />
+
+                <IoIosResize
+                  className="text-white"
+                  onMouseDown={() => {
+                    handelChangeScale(item);
+                  }}
+                />
+              </Html>
+
+              <meshBasicMaterial
+                polygonOffset
+                polygonOffsetFactor={-1}
+                map={useTexture<string>(item.url)}
+                transparent
+              />
+            </Decal>
+          );
+        })}
       </mesh>
       <mesh
         castShadow

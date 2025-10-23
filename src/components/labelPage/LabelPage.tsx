@@ -40,7 +40,6 @@ export const LabelPage = ({ setModal, setLabels, view, modelName }: any) => {
               <div
                 className="cursor-pointer size-52"
                 onClick={() => {
-                  // console.log(configPos[modelName][view]);
                   setLabels((prev: object[]) => [
                     ...prev,
                     {
@@ -61,6 +60,7 @@ export const LabelPage = ({ setModal, setLabels, view, modelName }: any) => {
                       scale: configPos[modelName].scale,
                     },
                   ]);
+
                   setModal("");
                 }}
               >
