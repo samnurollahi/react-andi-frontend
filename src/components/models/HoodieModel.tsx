@@ -5,7 +5,6 @@ import { Decal, Html, useGLTF, useTexture } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import { IoIosMove, IoIosResize } from "react-icons/io";
 import { MdOutlineScreenRotationAlt } from "react-icons/md";
-import { MeshBasicNodeMaterial } from "three/webgpu";
 
 export default function ({
   color,
@@ -22,7 +21,6 @@ export default function ({
   const isDragging = useRef(false);
   const isRotation = useRef(false);
   const isScaling = useRef(false);
-  const meshBack = useRef<any>(null);
   const textchurFocosed = useRef<any>({});
   const dataMouse = useRef({ clientX: 0, clientY: 0 });
 
