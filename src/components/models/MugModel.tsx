@@ -45,6 +45,7 @@ export default function ({
 
   useEffect(() => {
     window.addEventListener("mousemove", (e: MouseEvent) => {
+      console.log(isDragging.current);
       if (isDragging.current) {
         setLabels((prev: any[]) => {
           prev = prev.map((item) => {
@@ -58,6 +59,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
 
           return [...prev];
         });
@@ -75,6 +77,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       } else if (isScaling.current) {
@@ -93,6 +96,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       }
@@ -104,20 +108,26 @@ export default function ({
       isScaling.current = false;
       setEnabelModelController(true);
     });
-    window.addEventListener("touchmove", (e: any) => {
+
+    window.addEventListener("touchmove", (e: TouchEvent) => {
       if (isDragging.current) {
         setLabels((prev: any[]) => {
           prev = prev.map((item) => {
             if (item.id == textchurFocosed.current.id) {
               const SCALE = 0.0005;
-              item.decalX = item.decalX + e.movementX * SCALE;
-              item.decalY = item.decalY + -e.movementY * SCALE;
+              item.decalX =
+                item.decalX +
+                (e.touches[0].clientX - dataMouse.current.clientX) * SCALE;
+              item.decalY =
+                item.decalY +
+                -(dataMouse.current.clientY - e.touches[0].clientY) * SCALE;
               console.log([item.decalX, item.decalZ, item.decalY]);
               return item;
             } else {
               return item;
             }
           });
+          console.log("prev", prev);
 
           return [...prev];
         });
@@ -127,7 +137,7 @@ export default function ({
             if (item.id == textchurFocosed.current.id) {
               const oldRotation = item.rotateY || 0;
 
-              const deltaX = e.movementX;
+              const deltaX = dataMouse.current.clientX - e.touches[0].clientX;
               const newRotation = oldRotation + deltaX * 0.005;
               item.rotateY = newRotation;
               return item;
@@ -135,6 +145,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       } else if (isScaling.current) {
@@ -142,7 +153,7 @@ export default function ({
           prev = prev.map((item) => {
             if (item.id == textchurFocosed.current.id) {
               const oldScale = item.scale ?? 1;
-              const delta = e.movementY ?? 0;
+              const delta = dataMouse.current.clientX - e.touches[0].clientX;
               const sensitivity = 0.005;
               let newScale = oldScale + delta * sensitivity;
 
@@ -153,12 +164,17 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       }
-      dataMouse.current = { clientX: e.clientX, clientY: e.clientY };
+      dataMouse.current = {
+        clientX: e.touches[0].clientX,
+        clientY: e.touches[0].clientY,
+      };
     });
     window.addEventListener("touchend", () => {
+      console.log("touchend");
       isDragging.current = false;
       isRotation.current = false;
       isScaling.current = false;
@@ -217,6 +233,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white ml-2"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -224,6 +243,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -264,6 +286,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white ml-2"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -271,6 +296,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -326,6 +354,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white ml-2"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -333,6 +364,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -373,6 +407,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white ml-2"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -380,6 +417,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}

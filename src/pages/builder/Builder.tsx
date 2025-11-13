@@ -178,13 +178,13 @@ const Builder = () => {
             <p className="text-right mb-2 text-white">
               👇کدوم بخش رو میخوای طراحی کنی
             </p>
-            <div className="flex flex-row-reverse mb-3">
+            <div className="flex flex-wrap flex-row-reverse sm:justify-center md:justify-start mb-3">
               {modelName &&
                 configPos[modelName as keyof typeof configPos] &&
                 configPos[modelName as keyof typeof configPos].meshs.map(
                   (mesh: { name: string; value: string }) => {
                     return (
-                      <div className="w-[100px]  mx-3">
+                      <div className="w-[100px] mb-2  mx-3">
                         <button
                           className={`text-white ${
                             view != mesh.value ? "bg-black" : "bg-neutral-500"
@@ -203,7 +203,7 @@ const Builder = () => {
           </div>
 
           {/* layer */}
-          <div className="w-[100%] ml-4 mb-4 flex space-x-5">
+          <div className="w-[100%] ml-4 mb-4 flex flex-wrap space-x-5">
             {labels.map((label: any) => {
               return label.pos == view && !blakList.includes(label.id) ? (
                 <div
@@ -246,8 +246,8 @@ const Builder = () => {
             style={{ background: "#d7d3d412" }}
           >
             <div className="flex  flex-col justify-between">
-              <div className="flex flex-row-reverse">
-                <div className="w-[100px] relative mx-3">
+              <div className="flex flex-row-reverse flex-wrap sm:items-center md:justify-start">
+                <div className="w-[100px] relative mx-3 mb-2">
                   <div
                     className={`text-white text-center py-2 bg-neutral-900 absolute w-[100px] bottom-0 rounded-lg ${
                       statusChangeColor ? "block" : "hidden"
@@ -298,7 +298,7 @@ const Builder = () => {
                   </button>
                 </div>
 
-                <div className="w-[100px]  mx-3">
+                <div className="w-[100px]  mx-3 mb-2">
                   <button
                     className="text-white bg-neutral-900 w-[100%] py-2  rounded-lg cursor-pointer"
                     onClick={() => {
@@ -315,7 +315,7 @@ const Builder = () => {
                 </div>
 
                 <div
-                  className="w-[100px]  mx-3"
+                  className="w-[100px]  mx-3 mb-2"
                   title="اپلود تصویر از سیستم شما"
                 >
                   <button
@@ -329,7 +329,7 @@ const Builder = () => {
                 </div>
 
                 <div
-                  className="w-[100px]  mx-3"
+                  className="w-[100px]  mx-3 mb-2"
                   title="نوشتن متن دلخواه روی مدل"
                 >
                   <button

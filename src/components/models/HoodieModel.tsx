@@ -49,66 +49,6 @@ export default function ({
         setLabels((prev: any[]) => {
           prev = prev.map((item) => {
             if (item.id == textchurFocosed.current.id) {
-              const SCALE = 0.005;
-              item.decalX = item.decalX + e.movementX * SCALE;
-              item.decalY = item.decalY + -e.movementY * SCALE;
-              console.log([item.decalX, item.decalZ, item.decalY]);
-              return item;
-            } else {
-              return item;
-            }
-          });
-
-          return [...prev];
-        });
-      } else if (isRotation.current) {
-        setLabels((prev: any[]) => {
-          prev = prev.map((item) => {
-            if (item.id == textchurFocosed.current.id) {
-              const oldRotation = item.rotateY || 0;
-
-              const deltaX = e.movementX;
-              const newRotation = oldRotation + deltaX * 0.005;
-              item.rotateY = newRotation;
-              return item;
-            } else {
-              return item;
-            }
-          });
-          return [...prev];
-        });
-      } else if (isScaling.current) {
-        setLabels((prev: any[]) => {
-          prev = prev.map((item) => {
-            if (item.id == textchurFocosed.current.id) {
-              const oldScale = item.scale ?? 1;
-              const delta = e.movementY ?? 0;
-              const sensitivity = 0.05;
-              let newScale = oldScale + delta * sensitivity;
-
-              newScale = Math.max(0.1, Math.min(100, newScale));
-              item.scale = newScale;
-              return item;
-            } else {
-              return item;
-            }
-          });
-          return [...prev];
-        });
-      }
-      dataMouse.current = { clientX: e.clientX, clientY: e.clientY };
-    });
-    window.addEventListener("mouseup", () => {
-      isDragging.current = false;
-      isRotation.current = false;
-      isScaling.current = false;
-      setEnabelModelController(true);
-    });
-    window.addEventListener("touchmove", (e: any) => {
-      if (isDragging.current) {
-        setLabels((prev: any[]) => {
-          prev = prev.map((item) => {
-            if (item.id == textchurFocosed.current.id) {
               const SCALE = 0.0005;
               item.decalX = item.decalX + e.movementX * SCALE;
               item.decalY = item.decalY + -e.movementY * SCALE;
@@ -118,6 +58,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
 
           return [...prev];
         });
@@ -135,6 +76,7 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       } else if (isScaling.current) {
@@ -153,12 +95,85 @@ export default function ({
               return item;
             }
           });
+          console.log("prev", prev);
           return [...prev];
         });
       }
       dataMouse.current = { clientX: e.clientX, clientY: e.clientY };
     });
+    window.addEventListener("mouseup", () => {
+      isDragging.current = false;
+      isRotation.current = false;
+      isScaling.current = false;
+      setEnabelModelController(true);
+    });
+
+    window.addEventListener("touchmove", (e: TouchEvent) => {
+      if (isDragging.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const SCALE = 0.0005;
+              item.decalX =
+                item.decalX +
+                (e.touches[0].clientX - dataMouse.current.clientX) * SCALE;
+              item.decalY =
+                item.decalY +
+                -(dataMouse.current.clientY - e.touches[0].clientY) * SCALE;
+              console.log([item.decalX, item.decalZ, item.decalY]);
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+
+          return [...prev];
+        });
+      } else if (isRotation.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const oldRotation = item.rotateY || 0;
+
+              const deltaX = dataMouse.current.clientX - e.touches[0].clientX;
+              const newRotation = oldRotation + deltaX * 0.005;
+              item.rotateY = newRotation;
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+          return [...prev];
+        });
+      } else if (isScaling.current) {
+        setLabels((prev: any[]) => {
+          prev = prev.map((item) => {
+            if (item.id == textchurFocosed.current.id) {
+              const oldScale = item.scale ?? 1;
+              const delta = dataMouse.current.clientX - e.touches[0].clientX;
+              const sensitivity = 0.005;
+              let newScale = oldScale + delta * sensitivity;
+
+              newScale = Math.max(0.1, Math.min(5, newScale));
+              item.scale = newScale;
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log("prev", prev);
+          return [...prev];
+        });
+      }
+      dataMouse.current = {
+        clientX: e.touches[0].clientX,
+        clientY: e.touches[0].clientY,
+      };
+    });
     window.addEventListener("touchend", () => {
+      console.log("touchend");
       isDragging.current = false;
       isRotation.current = false;
       isScaling.current = false;
@@ -225,6 +240,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -232,6 +250,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -239,6 +260,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -268,6 +292,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -275,6 +302,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -282,6 +312,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -326,6 +359,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -333,6 +369,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -340,6 +379,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -369,6 +411,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -376,6 +421,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -383,6 +431,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -433,6 +484,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -440,6 +494,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -469,6 +526,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -476,6 +536,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -483,6 +546,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -536,6 +602,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -543,6 +612,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -550,6 +622,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -579,6 +654,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -586,6 +664,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -593,6 +674,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -663,6 +747,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -670,6 +757,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -677,6 +767,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}
@@ -706,6 +799,9 @@ export default function ({
               >
                 <IoIosMove
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangePos(item);
+                  }}
                   onMouseDown={() => {
                     handelChangePos(item);
                   }}
@@ -713,6 +809,9 @@ export default function ({
 
                 <MdOutlineScreenRotationAlt
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeRotation(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeRotation(item);
                   }}
@@ -720,6 +819,9 @@ export default function ({
 
                 <IoIosResize
                   className="text-white"
+                  onTouchStart={() => {
+                    handelChangeScale(item);
+                  }}
                   onMouseDown={() => {
                     handelChangeScale(item);
                   }}

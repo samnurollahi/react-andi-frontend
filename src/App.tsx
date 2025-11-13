@@ -3,7 +3,7 @@ import Index from "./pages/index/Index";
 import Container from "./components/container/Container";
 import Builder from "./pages/builder/Builder";
 import Auth from "./context/Auth";
-import Praivate from "./components/praivate/Praivate";
+import About from "./pages/about/About";
 import { Login } from "./pages/login/Login";
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
             <Route
               path="/builder"
               element={

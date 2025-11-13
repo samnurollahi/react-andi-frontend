@@ -1,15 +1,19 @@
+import { Link } from "react-router-dom";
+
 export default function () {
   return (
     <>
       <div className="flex mt-[20px] items-center flex-row-reverse justify-between">
-        <span className="fa fa-bars text-[30px] text-white cursor-pointer"></span>
+        <span className="fa fa-bars text-[30px] text-white cursor-pointer opacity-0"></span>
 
         <div>
-          <p className="text-white font-bold text-[22px]">ANDI :)</p>
+          <Link to={"/"} className="text-white font-bold text-[22px]">
+            ANDI :)
+          </Link>
         </div>
 
-        <div className="border-dotted border-2 rounded-full p-2 cursor-pointer border-white">
-          <span className="fa fa-question text-white "></span>
+        <div className="  rounded-full p-2 cursor-pointer">
+          <Link to={"/about"} className="fa fa-question text-white "></Link>
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Notif from "../../components/notif/Notif";
 import configPos from "../../utils/configPos";
 import { useNavigate } from "react-router-dom";
+import "../../anim.css";
 
 // @ts-ignore
 import tsh from "../../assets/models/tsh.glb";
@@ -34,28 +35,30 @@ export default function ({ isNotif = false }: props) {
 
   return (
     <>
-      <Navbar />
-      {notif && (
-        <Notif msg={"وارد شدید"} type={"success"} setNotif={setNotif} />
-      )}
-      <p className="text-white text-center mt-6 text-[15px]">
-        رایگان و سریع لباس مخصوص خودتو طراحی کن🚀😉
-      </p>
+      <div className="animate__animated animate__fadeInRight animate__faster">
+        <Navbar />
+        {notif && (
+          <Notif msg={"وارد شدید"} type={"success"} setNotif={setNotif} />
+        )}
+        <p className="text-white text-center mt-6 text-[15px]">
+          رایگان و سریع لباس مخصوص خودتو طراحی کن🚀😉
+        </p>
 
-      <div className="flex" dir="rtl">
-        {models.map((model) => (
-          <div className="flex flex-col p-10">
-            <div
-              onClick={() => {
-                navi(`/builder?model=${model.name}`);
-              }}
-              className="w-[150px] h-[150px] border-2 rounded-4xl bg-amber-100 cursor-pointer flex items-center justify-center"
-            >
-              <img src={`${model.th}`} alt="" className="w-[50%]" />
+        <div className="flex flex-wrap items-center justify-center" dir="rtl">
+          {models.map((model) => (
+            <div className="flex flex-col p-3">
+              <div
+                onClick={() => {
+                  navi(`/builder?model=${model.name}`);
+                }}
+                className="w-[150px] h-[150px] border-2 rounded-4xl bg-amber-100 cursor-pointer flex items-center justify-center"
+              >
+                <img src={`${model.th}`} alt="" className="w-[50%]" />
+              </div>
+              <p className="text-white text-center">{model.nameFa}</p>
             </div>
-            <p className="text-white text-center">{model.nameFa}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
