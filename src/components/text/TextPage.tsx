@@ -82,6 +82,8 @@ export const TextPage = ({ setModal, setLabels, view, modelName }: any) => {
 
   return (
     <div className="p-6">
+      <input type="text" />
+
       {/* header */}
       <div className="flex flex-row-reverse items-center justify-between mb-6">
         <p className="text-center font-bold text-[25px] text-white flex-1">

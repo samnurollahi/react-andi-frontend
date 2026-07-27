@@ -221,14 +221,14 @@ export default function ({
                 // debug={true}
               >
                 <Html
-                  // scale={0.1}
+                  scale={0.1}
                   position={[item.decalX, item.decalZ, item.decalY]}
                   rotation={[1.5, 0, 0]}
                   occlude
                   style={{ display: idFocos == item.id ? "block" : "none" }}
                 >
                   <IoIosMove
-                    className="text-white"
+                    className="text-white text-[30px]"
                     onTouchStart={() => {
                       handelChangePos(item);
                     }}
@@ -238,7 +238,7 @@ export default function ({
                   />
 
                   <MdOutlineScreenRotationAlt
-                    className="text-white ml-2"
+                    className="text-white ml-2 text-[30px]"
                     onTouchStart={() => {
                       handelChangeRotation(item);
                     }}
@@ -248,7 +248,7 @@ export default function ({
                   />
 
                   <IoIosResize
-                    className="text-white"
+                    className="text-white text-[30px]"
                     onTouchStart={() => {
                       handelChangeScale(item);
                     }}
